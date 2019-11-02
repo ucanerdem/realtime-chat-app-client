@@ -9,6 +9,8 @@ import TextContainer from "../TextContainer/TextContainer"
 
 import "./Chat.css"
 
+import { Redirect } from 'react-router-dom';
+
 let socket
 
 const Chat = ({ location }) => {
@@ -19,6 +21,8 @@ const Chat = ({ location }) => {
     const [users, setUsers] = useState('')
 
     const ENDPOINT = "https://realtime-chat-app-server.herokuapp.com/"  //"localhost:5000"
+
+    const [toHome, setToHome] = useState(false)
 
     useEffect(() => {
         const { name, room } = queryString.parse(location.search)
@@ -31,6 +35,8 @@ const Chat = ({ location }) => {
         socket.emit("join", { name, room }, (error) => {
             if (error) {
                 alert(error)
+                how to navigate to home page
+                setToHome(true)
             }
         })
     }, [ENDPOINT, location.search])
@@ -61,14 +67,19 @@ const Chat = ({ location }) => {
     }
 
     return (
-        <div className="outerContainer">
-            <div className="container">
-                <InfoBar room={room} />
-                <Messages messages={messages} name={name} />
-                <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
-            </div>
-            <TextContainer users={users} />
-        </div>
+        toHome ?
+            <Redirect to="/" />
+            :
+            (
+                <div className="outerContainer">
+                    <div className="container">
+                        <InfoBar room={room} />
+                        <Messages messages={messages} name={name} />
+                        <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
+                    </div>
+                    <TextContainer users={users} />
+                </div>
+            )
     )
 }
 
