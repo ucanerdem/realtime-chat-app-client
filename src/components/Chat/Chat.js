@@ -35,7 +35,7 @@ const Chat = ({ location }) => {
         socket.emit("join", { name, room }, (error) => {
             if (error) {
                 alert(error)
-                how to navigate to home page
+                //how to navigate to home page
                 setToHome(true)
             }
         })
